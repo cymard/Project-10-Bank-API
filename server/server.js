@@ -4,15 +4,19 @@ const cors = require('cors')
 const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
 const swaggerDocs = yaml.load('./swagger.yaml')
-const dbConnection = require('./database/connection')
 
-dotEnv.config()
+// Chargez les variables d'environnement à partir de .env.local en priorité
+dotEnv.config({ path: '.env.local' });
+
+// Chargez les variables d'environnement à partir de .env
+dotEnv.config();
 
 const app = express()
 const PORT = process.env.PORT || 3001
 
 // Connect to the database
-dbConnection()
+const dbConnection = require('./database/connection')
+dbConnection();
 
 // Handle CORS issues
 app.use(cors())
